@@ -78,7 +78,7 @@ class Mdisk:
         defaults to True
         :return: A text of converted links
         """
-        links = re.findall(r'https?://mdisk.me[^\s`!()\[\]{};:".,<>?«»“”‘’]+', text)
+        links = re.findall(r'https?://pdisk.pro[^\s`!()\[\]{};:".,<>?«»“”‘’]+', text)
         converted_links = await self.bulk_convert(links, silently_fail=silently_fail)
 
         for i, mdisk_link in enumerate(converted_links):
@@ -98,7 +98,7 @@ class Mdisk:
         if not await self.is_mdisk_link(link):
             raise LinkInvalid(link)
 
-        url = 'https://diskuploader.mypowerdisk.com/v1/tp/filename'
+        url = 'https://pdisk.pro/files?'
         rid = await self.__get_rid(link)
         res = requests.get(url, params={'token':self.__api_key,'rid':rid})
         data = res.json()
@@ -125,7 +125,7 @@ class Mdisk:
             raise LinkInvalid(link)
 
         rid = await self.__get_rid(link)
-        url = 'https://diskuploader.mypowerdisk.com/v1/tp/info'
+        url = 'https://pdisk.pro/info'
         param = {'token': self.__api_key, 'rid':rid,'filename':filename}
         res = requests.post(url, json = param)
         data = res.json()
@@ -177,6 +177,6 @@ class Mdisk:
         :return: True if the link is a valid mdisk link, False otherwise
         """
         domain = urlparse(link).netloc
-        if 'mdisk.me' in domain:
+        if 'pdisk.pro' in domain:
             return True
         return False
